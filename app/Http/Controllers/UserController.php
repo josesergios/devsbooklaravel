@@ -14,4 +14,14 @@ class UserController extends Controller
         $this->middleware('auth:api');
         $this->loggedUser = auth()->user();
     }
+
+    public function update(Request $request)
+    {
+        //PUT  api/user (name, email, birthdate, city, work, password, password_confirm)
+        $array = ['error'=>''];
+
+
+
+        return $array;
+    }
 }
