@@ -86,7 +86,6 @@ class UserController extends Controller
 
     public function updateAvatar(Request $request)
     {
-//        dd($request->all());
         $array = ['message' => ''];
         $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png']; //Formatos de imagens que serão aceitos
 
@@ -108,6 +107,43 @@ class UserController extends Controller
                 $user->save();
 
                 $array['url'] = url('/media/avatars/'.$filename);
+                $array['message'] = 'Avatar atualizado com sucesso!';
+            }else{
+                $array['message'] = 'Arquivo não suportado!';
+                return $array;
+            }
+
+        }else{
+            $array['message'] = 'Arquivo não enviado!';
+            return $array;
+        }
+
+        return $array;
+    }
+
+    public function updateCover(Request $request)
+    {
+        $array = ['message' => ''];
+        $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png']; //Formatos de imagens que serão aceitos
+
+        $image = $request->file('cover');
+
+        if($image){
+            if(in_array($image->getClientMimeType(), $allowedTypes)){
+
+                $filename = md5(time().rand(0,9999)).'.jpg';
+
+                $destPath = public_path('/media/covers');
+
+                $img = Image::make($image->path())
+                    ->fit(850, 310)
+                    ->save($destPath.'/'.$filename);
+
+                $user = User::find($this->loggedUser['id']);
+                $user->cover = $filename;
+                $user->save();
+
+                $array['url'] = url('/media/covers/'.$filename);
                 $array['message'] = 'Avatar atualizado com sucesso!';
             }else{
                 $array['message'] = 'Arquivo não suportado!';
