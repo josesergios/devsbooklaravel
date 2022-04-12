@@ -123,7 +123,8 @@ class UserController extends Controller
 
     public function updateCover(Request $request)
     {
-        $array = ['message' => ''];
+        //dd($request);
+        $array        = ['message' => ''];
         $allowedTypes = ['image/jpg', 'image/jpeg', 'image/png']; //Formatos de imagens que serão aceitos
 
         $image = $request->file('cover');
